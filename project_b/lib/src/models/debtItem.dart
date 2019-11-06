@@ -51,11 +51,11 @@ class DebtItem {
         debtStartDate: data['debtStartDate'],
         debtDeadlineDate: data['debtDeadlineDebt'],
         priority: data['priority'],
-        iOwe: data['iOwe'] == 0 ? false : true,
+        iOwe: data['iOwe'] == 1 ? true : false,
         //Since sqlite doesn't have boolean type for true/false
         //we will 0 to denote that it is false
         //and 1 for true
-        isDone: data['is_done'] == 0 ? false : true,
+        isDone: data['is_done'] == 1 ? true : false,
       );
   Map<String, dynamic> toDatabaseJson() => {
     //This will be used to convert Todo objects that
@@ -66,7 +66,7 @@ class DebtItem {
         "debtStartDate": this.debtStartDate,
         "debtDeadlineDate": this.debtDeadlineDate,
         "priority": this.priority,
-        "iOwe": this.iOwe == false ? 1 : 0,
-        "is_done": this.isDone == false ? 1 : 0,
+        "iOwe": this.iOwe == true ? 1 : 0,
+        "is_done": this.isDone == true ? 1 : 0,
       };
 }

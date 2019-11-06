@@ -128,7 +128,7 @@ class HomePageState extends State<HomePage> {
                 onPressed: () {
                   setState(
                     () {
-                      DebtItem item = DebtItem(iOwe: true);
+                      DebtItem item = DebtItem();
                       item.name = debtNameController.text;
                       item.debt = double.parse(debtAmountController.text);
                       item.debtDeadlineDate =
