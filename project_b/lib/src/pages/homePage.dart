@@ -316,7 +316,7 @@ class HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Debt Collector 3000"),
+        title: Text("Debt Collector 2.0"),
         actions: <Widget>[
           _summaryIcon,
         ],
