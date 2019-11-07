@@ -11,7 +11,7 @@ class DetailedPageState extends State<DetailedPage>{
   @override
   Widget build(BuildContext context) {
     var appBody = Container();
-    return Scaffold(appBar: AppBar(title: Text("Details"),),body: appBody,);  
+    return Scaffold(appBar: AppBar(title: Text("Details 2.0"),),body: appBody,);  
   }
   
 }
