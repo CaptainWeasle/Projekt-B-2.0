@@ -26,7 +26,7 @@ class DetailedPageState extends State<DetailedPage> {
         child: Icon(Icons.delete),
         backgroundColor: Colors.red,
       ),
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Padding(
