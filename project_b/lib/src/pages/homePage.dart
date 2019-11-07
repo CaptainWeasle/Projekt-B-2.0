@@ -469,7 +469,7 @@ class HomePageState extends State<HomePage> {
                         side: BorderSide(color: Colors.grey[200], width: 0.5),
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      color: Colors.white,
+                      color: Colors.blue[100],
                       child: ListTile(
                         leading: InkWell(
                           onTap: () {
@@ -540,6 +540,7 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.blue[200],
       appBar: AppBar(
         title: Text("Debt Collector 2.0"),
         actions: <Widget>[
