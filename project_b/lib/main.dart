@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_b/src/pages/addDebtDialog.dart';
 import 'package:project_b/src/pages/detailedPage.dart';
 import 'package:project_b/src/pages/homePage.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         "HomePage": (context) => HomePage(),
         "DetailedPage": (context) => DetailedPage(),
         //"AddDebtPage": (context) => AddDebtPage(),
+        "AddDebtDialog": (context) => AddDebtDialog(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Debt Collector',

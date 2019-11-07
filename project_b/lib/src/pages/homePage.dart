@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
+import 'package:project_b/src/pages/addDebtDialog.dart';
 import 'package:project_b/src/ui_elements/customAlert.dart';
 import 'package:intl/intl.dart';
+import 'package:project_b/src/ui_elements/debtNumberColor.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,9 +17,18 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  NewDebtBloc _newDebtBloc = NewDebtBloc();
+
+  Timer timer;
+  @override
+  void initState() {
+    print("init state aufgerufen");
+    timer = Timer.periodic(Duration(milliseconds: 1), (Timer t) => (){});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    NewDebtBloc _newDebtBloc = NewDebtBloc();
     DismissDirection _dismissDirection = DismissDirection.endToStart;
 
     var prio = 0;
@@ -25,65 +38,23 @@ class HomePageState extends State<HomePage> {
     IconData _iconPrio3 = Icons.add_circle_outline;
 
     getRightIcon() {
-      if (prio == 1) {
-        _iconPrio1 = Icons.add_circle;
-        _iconPrio2 = Icons.add_circle_outline;
-        _iconPrio3 = Icons.add_circle_outline;
-      } else if (prio == 2) {
-        _iconPrio2 = Icons.add_circle;
-        _iconPrio1 = Icons.add_circle_outline;
-        _iconPrio3 = Icons.add_circle_outline;
-      } else if (prio == 3) {
-        _iconPrio3 = Icons.add_circle;
-        _iconPrio2 = Icons.add_circle_outline;
-        _iconPrio1 = Icons.add_circle_outline;
-      }
-    }
-
-    Widget debtNumber(DebtItem debt) {
-      debtNumberStrich2(DebtItem debt) {
-        if (debt.isDone) {
-          return Colors.black;
-        } else if (!debt.isDone) {
-          return Colors.red;
-        }
-        return Colors.black;
-      }
-
-      debtNumberStrich(DebtItem debt) {
-        if (debt.isDone) {
-          return Colors.black;
-        } else if (!debt.isDone) {
-          return Colors.green;
-        }
-        return Colors.black;
-      }
-
-      if (debt.iOwe) {
-        return Text(
-          "-" + debt.debt.toString() + "€",
-          style: TextStyle(
-              color: debtNumberStrich2(debt),
-              fontSize: 16.5,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w500,
-              decoration: debt.isDone
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none),
-        );
-      } else if (!debt.iOwe) {
-        return Text(
-          "+" + debt.debt.toString() + "€",
-          style: TextStyle(
-              color: debtNumberStrich(debt),
-              fontSize: 16.5,
-              fontFamily: 'RobotoMono',
-              fontWeight: FontWeight.w500,
-              decoration: debt.isDone
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none),
-        );
-      }
+      setState(
+        () {
+          if (prio == 1) {
+            _iconPrio1 = Icons.add_circle;
+            _iconPrio2 = Icons.add_circle_outline;
+            _iconPrio3 = Icons.add_circle_outline;
+          } else if (prio == 2) {
+            _iconPrio2 = Icons.add_circle;
+            _iconPrio1 = Icons.add_circle_outline;
+            _iconPrio3 = Icons.add_circle_outline;
+          } else if (prio == 3) {
+            _iconPrio3 = Icons.add_circle;
+            _iconPrio2 = Icons.add_circle_outline;
+            _iconPrio1 = Icons.add_circle_outline;
+          }
+        },
+      );
     }
 
     TextEditingController debtNameController = TextEditingController();
@@ -370,37 +341,39 @@ class HomePageState extends State<HomePage> {
     var _summaryIcon = IconButton(
       icon: Icon(Icons.assessment),
       onPressed: () {
-        showGeneralDialog(
-            barrierColor: Colors.black.withOpacity(0.01),
-            transitionBuilder: (context, a1, a2, widget) {
-              final curvedValue =
-                  Curves.linearToEaseOut.transform(a1.value) - 1.0;
-              return Transform(
-                transform:
-                    Matrix4.translationValues(0.0, curvedValue * 600, 0.0),
-                child: Opacity(
-                  opacity: a1.value,
-                  child: CustomAlert(
-                    content: summaryDialog,
+        setState(() {
+          showGeneralDialog(
+              barrierColor: Colors.black.withOpacity(0.01),
+              transitionBuilder: (context, a1, a2, widget) {
+                final curvedValue =
+                    Curves.linearToEaseOut.transform(a1.value) - 1.0;
+                return Transform(
+                  transform:
+                      Matrix4.translationValues(0.0, curvedValue * 600, 0.0),
+                  child: Opacity(
+                    opacity: a1.value,
+                    child: CustomAlert(
+                      content: summaryDialog,
+                    ),
                   ),
-                ),
-              );
-            },
-            transitionDuration: Duration(milliseconds: 350),
-            barrierDismissible: true,
-            barrierLabel: '',
-            context: context,
-            pageBuilder: (context, animation1, animation2) {});
+                );
+              },
+              transitionDuration: Duration(milliseconds: 350),
+              barrierDismissible: true,
+              barrierLabel: '',
+              context: context,
+              pageBuilder: (context, animation1, animation2) {});
+        });
       },
     );
 
     var _floatingActionButton = FloatingActionButton(
-      onPressed: () {
-        showGeneralDialog(
+      onPressed: () async {
+        await showGeneralDialog(
           barrierColor: Colors.black.withOpacity(0.2),
           transitionBuilder: (context, a1, a2, widget) {
-            return CustomAlert(
-              content: addDebtDialog,
+            return AddDebtDialog(
+              newDebtBloc: _newDebtBloc,
             );
           },
           pageBuilder: (context, animation1, animation2) {},
@@ -514,15 +487,11 @@ class HomePageState extends State<HomePage> {
               )
             : Container(
                 child: Center(
-                child: noDebtMessageWidget(),
-              ));
+                  child: noDebtMessageWidget(),
+                ),
+              );
       } else {
         return Center(
-          /*since most of our I/O operations are done
-        outside the main thread asynchronously
-        we may want to display a loading indicator
-        to let the use know the app is currently
-        processing*/
           child: loadingData(),
         );
       }
