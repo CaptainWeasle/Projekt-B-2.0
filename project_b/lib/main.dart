@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_b/src/pages/detailedPage.dart';
 import 'package:project_b/src/pages/homePage.dart';
 
 void main() => runApp(MyApp());
@@ -9,8 +10,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.light,
-        primaryColor: Colors.amber,
-        accentColor: Colors.amberAccent,
+        primaryColor: Colors.blue[200],
+        accentColor: Colors.blue[100],
 
         // Define the default font family.
         fontFamily: 'Montserrat',
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "HomePage",
       routes: {
         "HomePage": (context) => HomePage(),
-        //"DetailedPage": (context) => DetailedPage(),
+        "DetailedPage": (context) => DetailedPage(),
         //"AddDebtPage": (context) => AddDebtPage(),
       },
       debugShowCheckedModeBanner: false,
