@@ -509,6 +509,7 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Debt Collector 2.0"),
         actions: <Widget>[
