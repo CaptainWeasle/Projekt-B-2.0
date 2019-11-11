@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
 import 'package:project_b/src/pages/addDebtDialog.dart';
+import 'package:project_b/src/pages/summaryDialog.dart';
 import 'package:project_b/src/ui_elements/customAlert.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
 
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   NewDebtBloc _newDebtBloc = NewDebtBloc();
 
+  List<DebtItem> localList = [];
+
   Timer timer;
   @override
   void initState() {
@@ -28,123 +31,9 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     DismissDirection _dismissDirection = DismissDirection.endToStart;
 
-    var bilanzColor;
-
-    double calcAllMyDebts() {
-      double debt = 0;
-
-      return debt;
+    updateLocalList(List<DebtItem> list) {
+      localList = list;
     }
-
-    double calcOtherDebts() {
-      double debt = 0;
-
-      return debt;
-    }
-
-    double calcDebtDifference() {
-      return calcOtherDebts() - calcAllMyDebts();
-    }
-
-    Widget summaryDialog = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-            ),
-          ),
-          height: 60,
-          width: 370,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Center(
-                child: Text(
-                  "Summary",
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "ICH SCHULDE GESAMT:",
-                  style: TextStyle(
-                      height: 2.5, fontSize: 20, fontFamily: 'Montserrat'),
-                ),
-                Text(
-                  " -" + calcAllMyDebts().toString() + "€",
-                  style: TextStyle(
-                    height: 2.5,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                    color: Colors.red,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "ICH BEKOMME GESAMT:",
-                  style: TextStyle(
-                    height: 2.5,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                  ),
-                ),
-                Text(
-                  " " + calcOtherDebts().toString() + "€",
-                  style: TextStyle(
-                    height: 2.5,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                    color: Colors.green,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  "Meine Bilanz:",
-                  style: TextStyle(
-                    height: 2.5,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                  ),
-                ),
-                Text(
-                  " " + calcDebtDifference().toString() + "€",
-                  style: TextStyle(
-                    height: 2.5,
-                    fontSize: 20,
-                    fontFamily: 'Montserrat',
-                    color: bilanzColor,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
 
     var _summaryIcon = IconButton(
       icon: Icon(Icons.assessment),
@@ -160,8 +49,8 @@ class HomePageState extends State<HomePage> {
                       Matrix4.translationValues(0.0, curvedValue * 600, 0.0),
                   child: Opacity(
                     opacity: a1.value,
-                    child: CustomAlert(
-                      content: summaryDialog,
+                    child: SummaryDialog(
+                      localList: localList,
                     ),
                   ),
                 );
@@ -211,6 +100,7 @@ class HomePageState extends State<HomePage> {
     }
 
     Widget noDebtMessageWidget() {
+      localList = [];
       return Container(
         child: Text(
           "Start adding Debts...",
@@ -242,6 +132,7 @@ class HomePageState extends State<HomePage> {
                     ),
                     onDismissed: (direction) {
                       _newDebtBloc.deleteDebtById(debt.id);
+                      updateLocalList(snapshot.data);
                     },
                     direction: _dismissDirection,
                     key: new ObjectKey(debt),
@@ -256,6 +147,7 @@ class HomePageState extends State<HomePage> {
                           onTap: () {
                             debt.isDone = !debt.isDone;
                             _newDebtBloc.updateDebt(debt);
+                            updateLocalList(snapshot.data);
                           },
                           //decoration: BoxDecoration(),
                           child: Padding(
@@ -285,11 +177,13 @@ class HomePageState extends State<HomePage> {
                         ),
                         trailing: debtNumber(debt),
                         onTap: () {
+                          updateLocalList(snapshot.data);
                           Navigator.pushNamed(context, "DetailedPage");
                         },
                       ),
                     ),
                   );
+                  updateLocalList(snapshot.data);
                   return dismissibleCard;
                 },
               )
@@ -299,6 +193,7 @@ class HomePageState extends State<HomePage> {
                 ),
               );
       } else {
+        updateLocalList(snapshot.data);
         return Center(
           child: loadingData(),
         );
