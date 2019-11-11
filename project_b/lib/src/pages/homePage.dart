@@ -4,7 +4,7 @@ import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
 import 'package:project_b/src/pages/addDebtDialog.dart';
 import 'package:project_b/src/pages/summaryDialog.dart';
-import 'package:project_b/src/ui_elements/customAlert.dart';
+import 'package:project_b/src/ui_elements/dataSearch.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
 
 class HomePage extends StatefulWidget {
@@ -149,7 +149,6 @@ class HomePageState extends State<HomePage> {
                             _newDebtBloc.updateDebt(debt);
                             updateLocalList(snapshot.data);
                           },
-                          //decoration: BoxDecoration(),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: debt.isDone
@@ -200,6 +199,17 @@ class HomePageState extends State<HomePage> {
       }
     }
 
+    var _searchIcon = IconButton(
+      icon: Icon(Icons.search),
+      onPressed: () {
+        showSearch(
+            context: context,
+            delegate: DataSearch(
+              list: localList,
+            ));
+      },
+    );
+
     var _appBody = StreamBuilder(
       stream: _newDebtBloc.debts,
       builder: (BuildContext context, AsyncSnapshot<List<DebtItem>> snapshot) {
@@ -216,6 +226,7 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Debt Collector 2.0"),
         actions: <Widget>[
+          _searchIcon,
           _summaryIcon,
         ],
       ),

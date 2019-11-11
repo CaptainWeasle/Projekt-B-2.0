@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
 
 class SummaryDialog extends StatefulWidget {
@@ -21,14 +20,15 @@ class SummaryDialog extends StatefulWidget {
 class SummaryDialogState extends State<SummaryDialog> {
   @override
   Widget build(BuildContext context) {
-
-    var bilanzColor; 
+    var bilanzColor;
 
     double calcAllMyDebts() {
       double debt = 0;
       for (int i = 0; i < widget.localList.length; i++) {
-        if (widget.localList[i].iOwe) {
-          debt += widget.localList[i].debt;
+        if (!widget.localList[i].isDone) {
+          if (widget.localList[i].iOwe) {
+            debt += widget.localList[i].debt;
+          }
         }
       }
       return debt;
@@ -37,15 +37,25 @@ class SummaryDialogState extends State<SummaryDialog> {
     double calcOtherDebts() {
       double debt = 0;
       for (int i = 0; i < widget.localList.length; i++) {
-        if (!widget.localList[i].iOwe) {
-          debt += widget.localList[i].debt;
+        if (!widget.localList[i].isDone) {
+          if (!widget.localList[i].iOwe) {
+            debt += widget.localList[i].debt;
+          }
         }
       }
       return debt;
     }
 
     double calcDebtDifference() {
-      return calcOtherDebts() - calcAllMyDebts();
+      var calcDiff = calcOtherDebts() - calcAllMyDebts();
+      if (calcDiff > 0) {
+        bilanzColor = Colors.green;
+      } else if (calcDiff < 0) {
+        bilanzColor = Colors.red;
+      } else {
+        bilanzColor = Colors.black;
+      }
+      return calcDiff;
     }
 
     Widget summaryDialog = Column(
@@ -56,8 +66,8 @@ class SummaryDialogState extends State<SummaryDialog> {
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
             ),
           ),
           height: 60,
