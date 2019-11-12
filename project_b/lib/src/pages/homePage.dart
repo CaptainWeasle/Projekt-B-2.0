@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
 import 'package:project_b/src/pages/addDebtDialog.dart';
+import 'package:project_b/src/pages/detailedPage.dart';
 import 'package:project_b/src/pages/summaryDialog.dart';
 import 'package:project_b/src/ui_elements/dataSearch.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
@@ -174,10 +175,18 @@ class HomePageState extends State<HomePage> {
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none),
                         ),
-                        trailing: debtNumber(debt),
+                        trailing: debtNumberCard(debt),
                         onTap: () {
                           updateLocalList(snapshot.data);
-                          Navigator.pushNamed(context, "DetailedPage");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailedPage(
+                                debtBloc: _newDebtBloc,
+                                debtItem: snapshot.data[itemPosition],
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),

@@ -28,11 +28,10 @@ class AddDebtDialogState extends State<AddDebtDialog> {
   IconData _iconPrio3 = Icons.add_circle_outline;
 
   bool debtSwitch = false;
+  var prio = 0;
 
   @override
   Widget build(BuildContext context) {
-    var prio = 0;
-
     getRightIcon() {
       if (prio == 1) {
         _iconPrio1 = Icons.add_circle;
@@ -68,7 +67,6 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                         onChanged: (value) {
                           setState(() {
                             debtSwitch = value;
-                            print(debtSwitch);
                           });
                         },
                         activeTrackColor: Theme.of(context).accentColor,
@@ -167,14 +165,15 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                         DebtItem item = DebtItem();
                         item.name = debtNameController.text;
                         item.debt = double.parse(debtAmountController.text);
-                        item.debtDeadlineDate =
-                            debtDateController.text + " 00:00:00Z";
+                        item.debtDeadlineDate = debtDateController.text;
+                        item.debtStartDate =
+                            DateTime.now().toString().substring(0, 10);
                         item.iOwe = !debtSwitch;
+                        item.priority = prio;
+                        print(item);
                         widget.newDebtBloc.addDebt(item);
-                        Navigator.pop(context,(){
-                          setState(() {
-                            
-                          });
+                        Navigator.pop(context, () {
+                          setState(() {});
                         });
                       },
                     );

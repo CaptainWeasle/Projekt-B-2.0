@@ -49,7 +49,7 @@ class DebtItem {
         name: data['name'],
         debt: data['debt'],
         debtStartDate: data['debtStartDate'],
-        debtDeadlineDate: data['debtDeadlineDebt'],
+        debtDeadlineDate: data['debtDeadlineDate'],
         priority: data['priority'],
         iOwe: data['iOwe'] == 1 ? true : false,
         //Since sqlite doesn't have boolean type for true/false

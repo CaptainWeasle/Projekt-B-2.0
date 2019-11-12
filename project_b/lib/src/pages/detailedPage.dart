@@ -1,10 +1,20 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/database/database.dart';
 import 'package:project_b/src/models/debtItem.dart';
+import 'package:project_b/src/ui_elements/debtNumberColor.dart';
 
 class DetailedPage extends StatefulWidget {
+  final NewDebtBloc debtBloc;
+  final DebtItem debtItem;
+
+  DetailedPage({
+    this.debtBloc,
+    this.debtItem,
+  });
+
   @override
   State<StatefulWidget> createState() {
     return DetailedPageState();
@@ -16,46 +26,7 @@ class DetailedPageState extends State<DetailedPage> {
   Widget build(BuildContext context) {
     TextEditingController beschreibungEditController = TextEditingController();
 
-    priorityFarbe(DebtItem debt) {
-      if (debt.priority == 1) {
-        return Text(
-          "High",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-          ),
-        );
-      } else if (debt.priority == 2) {
-        return Text(
-          "Normal",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.orange,
-            fontWeight: FontWeight.bold,
-          ),
-        );
-      } else if (debt.priority == 3) {
-        return Text(
-          "Low",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
-        );
-      }
-      return Text(
-        "Keine",
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-      );
-    }
-
-    var appBody = Column(
+    var appBody = ListView(
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
@@ -71,7 +42,7 @@ class DetailedPageState extends State<DetailedPage> {
             children: <Widget>[
               SizedBox(height: 32.0),
               Container(
-                width: 200.0,
+                width: 400.0,
                 child: Text(
                   'Schuld Übersicht',
                   style: TextStyle(
@@ -81,7 +52,7 @@ class DetailedPageState extends State<DetailedPage> {
                 ),
               ),
               SizedBox(height: 42.0),
-              itemRow(Icons.account_box, 'Name', 'Test'),
+              itemRow(Icons.account_box, 'Name', widget.debtItem.name),
               SizedBox(height: 22.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,18 +75,65 @@ class DetailedPageState extends State<DetailedPage> {
                       ),
                     ],
                   ),
-                  Text(
-                      "debt"), //Andre´s neues kacksystem hier, siehe DEBTNUMBER
+                  debtNumber(widget.debtItem),
                 ],
               ),
               SizedBox(height: 22.0),
-              itemRow(Icons.date_range, 'Erstellt', 'dann und dann bla'),
+              itemRow(
+                  Icons.date_range, 'Erstellt', widget.debtItem.debtStartDate),
               SizedBox(height: 22.0),
-              itemRow(Icons.date_range, 'Bis', 'morgen'),
+              itemRow(
+                  Icons.date_range, 'Bis', widget.debtItem.debtDeadlineDate),
               SizedBox(height: 22.0),
-              itemRow(Icons.priority_high, 'Priorität', 'High'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.priority_high,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "Priorität",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20.0),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  priorityFarbe(widget.debtItem),
+                ],
+              ),
               SizedBox(height: 22.0),
-              itemRow(Icons.directions, 'Schuld beglichen', 'Nope'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.directions,
+                            color: Colors.black,
+                          ),
+                          SizedBox(width: 6.0),
+                          Text(
+                            "Schuld beglichen",
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 20.0),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  isDone(widget.debtItem),
+                ],
+              ),
             ],
           ),
         ),
@@ -137,7 +155,6 @@ class DetailedPageState extends State<DetailedPage> {
           ),
         ),
         SizedBox(height: 32.0),
-        Spacer(),
       ],
     );
 
@@ -157,52 +174,4 @@ class DetailedPageState extends State<DetailedPage> {
       body: appBody,
     );
   }
-}
-
-//Andre´s neues kacksystem hier, siehe DEBTNUMBER
-Widget debtNumber(DebtItem debt) {
-  if (debt.iOwe) {
-    return Text(
-      "-" + debt.debt.toString() + "€",
-      style: TextStyle(
-        color: Colors.red,
-        fontSize: 20,
-      ),
-    );
-  } else if (!debt.iOwe) {
-    return Text(
-      "+" + debt.debt.toString() + "€",
-      style: TextStyle(
-        color: Colors.green,
-        fontSize: 20,
-      ),
-    );
-  }
-  return Text("data");
-}
-
-itemRow(icon, name, title) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Row(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Icon(
-                icon,
-                color: Colors.black,
-              ),
-              SizedBox(width: 6.0),
-              Text(
-                name,
-                style: TextStyle(color: Colors.black, fontSize: 20.0),
-              )
-            ],
-          ),
-        ],
-      ),
-      Text(title, style: TextStyle(color: Colors.black, fontSize: 20.0))
-    ],
-  );
 }
