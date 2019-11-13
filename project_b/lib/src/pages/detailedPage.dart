@@ -28,51 +28,46 @@ class DetailedPageState extends State<DetailedPage> {
 
     var appBody = ListView(
       children: <Widget>[
-        Container(
-          height: 117,
-          decoration: BoxDecoration(
-            color: Colors.blue[100],
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(32),
-              bottomLeft: Radius.circular(32),
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 400.0,
-                child: Text(
-                  ' Schuld ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45.0),
-                ),
-              ),
-              Container(
-                width: 400.0,
-                child: Text(
-                  ' Übersicht',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45.0),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 10.0),
         Padding(
-          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.blue[100],
-                borderRadius: BorderRadius.all(Radius.circular(32))),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(32),
+                  bottomLeft: Radius.circular(32),
+                )),
             padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                SizedBox(
+                  height: 40,
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        'Schuld ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
+                    ),
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        'Übersicht',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 32.0),
                 itemRow(Icons.account_box, 'Name', widget.debtItem.name),
                 SizedBox(height: 22.0),
@@ -163,8 +158,41 @@ class DetailedPageState extends State<DetailedPage> {
         SizedBox(height: 15.0),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(24)),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Beschreibung:",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                  child: CupertinoTextField(
+                    controller: beschreibungEditController,
+                    cursorColor: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 15.0),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                begleichenButtonTap(widget.debtItem);
+              });
+            },
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.blue[100],
@@ -173,8 +201,10 @@ class DetailedPageState extends State<DetailedPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Text(
-                    begleichenButton(widget.debtItem),
-                    style: TextStyle(fontSize: 20),
+                    begleichenButtonText(widget.debtItem),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
@@ -200,12 +230,17 @@ class DetailedPageState extends State<DetailedPage> {
                 child: Center(
                   child: Text(
                     "Schuld Löschen",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
+        ),
+        SizedBox(
+          height: 20,
         ),
       ],
     );

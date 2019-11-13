@@ -2,11 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_b/src/models/debtItem.dart';
 
-begleichenButton(DebtItem debt) {
+begleichenButtonText(DebtItem debt) {
   if (debt.isDone) {
     return "Schuld nicht beglichen";
   }
   return "Schuld begleichen";
+}
+
+begleichenButtonTap(DebtItem debt) {
+  if (debt.isDone) {
+    return debt.isDone = false;
+  }
+  return debt.isDone = true;
 }
 
 isDone(DebtItem debt) {
