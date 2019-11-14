@@ -9,9 +9,15 @@ final debtTABLE = 'Debt';
 class DatabaseProvider {
   static final DatabaseProvider dbProvider = DatabaseProvider();
   Database _database;
+  //bool changed = false;
   Future<Database> get database async {
+    /*if(!changed){
+      changeTable(_database, 1);
+      changed = true;
+    }*/
     if (_database != null) return _database;
     _database = await createDatabase();
+    //changeTable(_database, 1);
     return _database;
   }
 
@@ -28,6 +34,13 @@ class DatabaseProvider {
   void onUpgrade(Database database, int oldVersion, int newVersion) {
     if (newVersion > oldVersion) {}
   }
+/*
+  void changeTable(Database database, int version) async{
+    await database.rawInsert(
+      "ALTER TABLE $debtTABLE "
+      "ADD descr TEXT"
+    );
+  }*/
 
   void initDB(Database database, int version) async {
     await database.execute("CREATE TABLE $debtTABLE ("
@@ -41,7 +54,8 @@ class DatabaseProvider {
         /*SQLITE doesn't have boolean type
         so we store isDone as integer where 0 is false
         and 1 is true*/
-        "is_done INTEGER "
+        "is_done INTEGER, "
+        "descr TEXT, "
         ")");
   }
 }

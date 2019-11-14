@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_b/src/blocs/newDebtBloc.dart';
-import 'package:project_b/src/database/database.dart';
 import 'package:project_b/src/models/debtItem.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
 
@@ -22,20 +20,21 @@ class DetailedPage extends StatefulWidget {
 }
 
 class DetailedPageState extends State<DetailedPage> {
+  TextEditingController beschreibungEditController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController beschreibungEditController = TextEditingController();
-
     var appBody = ListView(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.blue[100],
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(32),
                   bottomLeft: Radius.circular(32),
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
                 )),
             padding: EdgeInsets.fromLTRB(32, 0, 32, 32),
             child: Column(
@@ -175,7 +174,14 @@ class DetailedPageState extends State<DetailedPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                  child: CupertinoTextField(
+                  child: EditableText(
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 17,
+                    ),
+                    backgroundCursorColor: Colors.red,
+                    focusNode: FocusNode(),
                     controller: beschreibungEditController,
                     cursorColor: Colors.black,
                   ),
@@ -187,16 +193,20 @@ class DetailedPageState extends State<DetailedPage> {
         SizedBox(height: 15.0),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: GestureDetector(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(24),
+            splashColor: Colors.blue[300],
+            highlightColor: Colors.blue[100],
             onTap: () {
               setState(() {
                 begleichenButtonTap(widget.debtItem);
               });
             },
-            child: Container(
+            child: Ink(
               decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(24)),
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(24),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
@@ -216,12 +226,15 @@ class DetailedPageState extends State<DetailedPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: GestureDetector(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(24),
+            splashColor: Colors.red[600],
+            highlightColor: Colors.red[400],
             onTap: () {
               widget.debtBloc.deleteDebtById(widget.debtItem.id);
               Navigator.pop(context);
             },
-            child: Container(
+            child: Ink(
               decoration: BoxDecoration(
                   color: Colors.red[400],
                   borderRadius: BorderRadius.circular(24)),

@@ -170,6 +170,7 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                             DateTime.now().toString().substring(0, 10);
                         item.iOwe = !debtSwitch;
                         item.priority = prio;
+                        item.descr = "hat geklappt baby";
                         print(item);
                         widget.newDebtBloc.addDebt(item);
                         Navigator.pop(context, () {

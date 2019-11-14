@@ -7,6 +7,7 @@ class DebtItem {
   int priority;
   bool iOwe;
   bool isDone;
+  String descr;
 
   DebtItem._();
   DebtItem({
@@ -18,6 +19,7 @@ class DebtItem {
     this.priority,
     this.iOwe,
     this.isDone,
+    this.descr,
   });
 
   String getName() => name;
@@ -56,6 +58,7 @@ class DebtItem {
         //we will 0 to denote that it is false
         //and 1 for true
         isDone: data['is_done'] == 1 ? true : false,
+        descr: data['descr'],
       );
   Map<String, dynamic> toDatabaseJson() => {
     //This will be used to convert Todo objects that
@@ -68,5 +71,6 @@ class DebtItem {
         "priority": this.priority,
         "iOwe": this.iOwe == true ? 1 : 0,
         "is_done": this.isDone == true ? 1 : 0,
+        "descr": this.descr,
       };
 }
