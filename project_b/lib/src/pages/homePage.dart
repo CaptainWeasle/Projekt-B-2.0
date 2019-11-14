@@ -142,7 +142,7 @@ class HomePageState extends State<HomePage> {
                         side: BorderSide(color: Colors.grey[200], width: 0.5),
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      color: Colors.white,
+                      color: Colors.blue[100],
                       child: ListTile(
                         leading: InkWell(
                           onTap: () {
@@ -219,11 +219,55 @@ class HomePageState extends State<HomePage> {
       },
     );
 
-    var _appBody = StreamBuilder(
-      stream: _newDebtBloc.debts,
-      builder: (BuildContext context, AsyncSnapshot<List<DebtItem>> snapshot) {
-        return getDebtCardWidget(snapshot);
-      },
+    var _appBody = Column(
+      children: <Widget>[
+        SafeArea(          
+          child: Container(
+            width: 500,
+            height: 117,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
+              ),
+              color: Colors.blue[100],
+            ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 400.0,
+                  child: Text(
+                    ' Debt ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45.0),
+                  ),
+                ),
+                Container(
+                  width: 400.0,
+                  child: Text(
+                    ' Collector',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: StreamBuilder(
+            stream: _newDebtBloc.debts,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<DebtItem>> snapshot) {
+              return getDebtCardWidget(snapshot);
+            },
+          ),
+        )
+      ],
     );
 
     dispose() {
@@ -231,16 +275,16 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[200],
+      floatingActionButton: _floatingActionButton,
+      body: _appBody,
       appBar: AppBar(
-        title: Text("Debt Collector 2.0"),
+        title: Text("Debt Collector"),
         actions: <Widget>[
           _searchIcon,
           _summaryIcon,
         ],
       ),
-      floatingActionButton: _floatingActionButton,
-      body: _appBody,
     );
   }
 }

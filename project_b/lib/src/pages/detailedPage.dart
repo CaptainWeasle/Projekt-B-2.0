@@ -25,45 +25,50 @@ class DetailedPageState extends State<DetailedPage> {
   Widget build(BuildContext context) {
     var appBody = Column(
       children: <Widget>[
-        SizedBox(height: 50, child: Container(color: Colors.blue[100],),),
-        Container(
-          width: 500,
-          height: 117,
-          decoration: BoxDecoration(
-            color: Colors.blue[100],
-            
-          ),
-          
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 400.0,
-                child: Text(
-                  ' Schuld ',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45.0),
-                ),
+        SafeArea(          
+          child: Container(
+            width: 500,
+            height: 117,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(24),
+                bottomRight: Radius.circular(24),
               ),
-              Container(
-                width: 400.0,
-                child: Text(
-                  ' Übersicht',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 45.0),
+              color: Colors.blue[100],
+            ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 400.0,
+                  child: Text(
+                    ' Schuld ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45.0),
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  width: 400.0,
+                  child: Text(
+                    ' Übersicht',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45.0),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Expanded(
+          
           child: ListView(
+            padding: EdgeInsets.all(10),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.blue[100],
@@ -77,7 +82,6 @@ class DetailedPageState extends State<DetailedPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      
                       SizedBox(height: 32.0),
                       itemRow(Icons.account_box, 'Name', widget.debtItem.name),
                       SizedBox(height: 22.0),
@@ -292,6 +296,9 @@ class DetailedPageState extends State<DetailedPage> {
       ),
       backgroundColor: Colors.blue[200],
       body: appBody,
+      appBar: AppBar(
+        title: Text("Zurück"),
+      ),
     );
   }
 }
