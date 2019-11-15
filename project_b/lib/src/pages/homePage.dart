@@ -221,17 +221,10 @@ class HomePageState extends State<HomePage> {
 
     var _appBody = Column(
       children: <Widget>[
-        SafeArea(          
-          child: Container(
-            width: 500,
-            height: 117,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-              color: Colors.blue[100],
-            ),
+        Container(
+          color: Colors.blue[100],
+          padding: EdgeInsets.all(8),
+          child: SafeArea(
             child: Column(
               children: <Widget>[
                 Container(
@@ -278,13 +271,13 @@ class HomePageState extends State<HomePage> {
       backgroundColor: Colors.blue[200],
       floatingActionButton: _floatingActionButton,
       body: _appBody,
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text("Debt Collector"),
         actions: <Widget>[
           _searchIcon,
           _summaryIcon,
         ],
-      ),
+      ),*/
     );
   }
 }
