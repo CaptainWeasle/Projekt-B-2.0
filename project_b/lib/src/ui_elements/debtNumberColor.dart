@@ -15,7 +15,32 @@ begleichenButtonTap(DebtItem debt) {
   }
   return debt.isDone = true;
 }
-
+ werSchuldetWem(DebtItem debt){
+      if(debt.iOwe == true){
+        return Text("Ich schulde...",
+          style: TextStyle(
+            fontSize: 25.0,
+            fontStyle: FontStyle.italic,
+            
+          ),
+        );
+      }else if(debt.iOwe == false){
+        return Text("Mir schuldet...",
+          style: TextStyle(
+            fontSize: 25.0,
+            fontStyle: FontStyle.italic,
+           
+          ),
+        );
+      }
+      return Text("Nur arme leihen sich Geld...",
+        style: TextStyle(
+          fontSize: 20.0,
+          fontStyle: FontStyle.italic,
+          
+        ),
+      );
+    }
 isDone(DebtItem debt) {
   if (debt.isDone) {
     return Text(

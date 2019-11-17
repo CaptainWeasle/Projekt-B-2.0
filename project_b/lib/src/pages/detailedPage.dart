@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_b/src/blocs/newDebtBloc.dart';
 import 'package:project_b/src/models/debtItem.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
+import 'package:project_b/src/ui_elements/headerClipper.dart';
 
 class DetailedPage extends StatefulWidget {
   final NewDebtBloc debtBloc;
@@ -25,43 +26,49 @@ class DetailedPageState extends State<DetailedPage> {
   Widget build(BuildContext context) {
     var appBody = Column(
       children: <Widget>[
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8,0,8,0),
-            child: Container(
-              padding: EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                  topLeft: Radius.circular(24),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16)),
+            color: Colors.blue[200],
+          ),
+          child: SafeArea(
+            child: ClipPath(
+              clipper: HeaderClipper(),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16)),
+                  color: Colors.blue[100],
                 ),
-                color: Colors.blue[100],
-              ),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 400.0,
-                    child: Text(
-                      ' Schuld ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 45.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        ' Schuld ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 400.0,
-                    child: Text(
-                      ' Übersicht',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 45.0),
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        ' Übersicht',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -69,10 +76,10 @@ class DetailedPageState extends State<DetailedPage> {
         Expanded(
           flex: 1,
           child: ListView(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(4),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
+                padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.blue[100],
@@ -86,7 +93,11 @@ class DetailedPageState extends State<DetailedPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(height: 32.0),
+                      SizedBox(height: 22.0),
+                      Center(
+                        child: werSchuldetWem(widget.debtItem),
+                      ),
+                      SizedBox(height: 12),
                       itemRow(Icons.account_box, 'Name', widget.debtItem.name),
                       SizedBox(height: 22.0),
                       Row(
@@ -173,9 +184,9 @@ class DetailedPageState extends State<DetailedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 10.0),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.blue[100],
@@ -183,7 +194,7 @@ class DetailedPageState extends State<DetailedPage> {
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(4.0),
                         child: Text(
                           "Beschreibung:",
                           style: TextStyle(
@@ -209,9 +220,9 @@ class DetailedPageState extends State<DetailedPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 10.0),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
                   splashColor: Colors.blue[300],
@@ -241,10 +252,10 @@ class DetailedPageState extends State<DetailedPage> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(24),
                   splashColor: Colors.red[600],
@@ -298,7 +309,7 @@ class DetailedPageState extends State<DetailedPage> {
           ),
         ],
       ),
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[300],
       body: appBody,
     );
   }

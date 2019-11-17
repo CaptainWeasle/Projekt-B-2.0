@@ -7,6 +7,7 @@ import 'package:project_b/src/pages/detailedPage.dart';
 import 'package:project_b/src/pages/summaryDialog.dart';
 import 'package:project_b/src/ui_elements/dataSearch.dart';
 import 'package:project_b/src/ui_elements/debtNumberColor.dart';
+import 'package:project_b/src/ui_elements/headerClipper.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -137,57 +138,60 @@ class HomePageState extends State<HomePage> {
                     },
                     direction: _dismissDirection,
                     key: new ObjectKey(debt),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.grey[200], width: 0.5),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      color: Colors.blue[100],
-                      child: ListTile(
-                        leading: InkWell(
-                          onTap: () {
-                            debt.isDone = !debt.isDone;
-                            _newDebtBloc.updateDebt(debt);
-                            updateLocalList(snapshot.data);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: debt.isDone
-                                ? Icon(
-                                    Icons.check_box,
-                                    size: 26.0,
-                                    color: Colors.blue[200],
-                                  )
-                                : Icon(
-                                    Icons.check_box_outline_blank,
-                                    size: 26.0,
-                                    color: Colors.blue[200],
-                                  ),
-                          ),
+                    child: Container(
+                      color: Colors.blue[200],
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.grey[200], width: 0.5),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        title: Text(
-                          debt.name,
-                          style: TextStyle(
-                              fontSize: 16.5,
-                              fontFamily: 'RobotoMono',
-                              fontWeight: FontWeight.w500,
-                              decoration: debt.isDone
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none),
-                        ),
-                        trailing: debtNumberCard(debt),
-                        onTap: () {
-                          updateLocalList(snapshot.data);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailedPage(
-                                debtBloc: _newDebtBloc,
-                                debtItem: snapshot.data[itemPosition],
-                              ),
+                        color: Colors.blue[100],
+                        child: ListTile(
+                          leading: InkWell(
+                            onTap: () {
+                              debt.isDone = !debt.isDone;
+                              _newDebtBloc.updateDebt(debt);
+                              updateLocalList(snapshot.data);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: debt.isDone
+                                  ? Icon(
+                                      Icons.check_box,
+                                      size: 26.0,
+                                      color: Colors.blue[300],
+                                    )
+                                  : Icon(
+                                      Icons.check_box_outline_blank,
+                                      size: 26.0,
+                                      color: Colors.blue[300],
+                                    ),
                             ),
-                          );
-                        },
+                          ),
+                          title: Text(
+                            debt.name,
+                            style: TextStyle(
+                                fontSize: 16.5,
+                                fontFamily: 'RobotoMono',
+                                fontWeight: FontWeight.w500,
+                                decoration: debt.isDone
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none),
+                          ),
+                          trailing: debtNumberCard(debt),
+                          onTap: () {
+                            updateLocalList(snapshot.data);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailedPage(
+                                  debtBloc: _newDebtBloc,
+                                  debtItem: snapshot.data[itemPosition],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   );
@@ -222,32 +226,38 @@ class HomePageState extends State<HomePage> {
     var _appBody = Column(
       children: <Widget>[
         Container(
-          color: Colors.blue[100],
-          padding: EdgeInsets.all(8),
+          color: Colors.blue[200],
+          width: double.infinity,
           child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: 400.0,
-                  child: Text(
-                    ' Debt ',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 45.0),
-                  ),
+            child: ClipPath(
+              clipper: HeaderClipper(),
+              child: Container(
+                color: Colors.blue[100],
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        ' Debt ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
+                    ),
+                    Container(
+                      width: 400.0,
+                      child: Text(
+                        ' Collector',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 45.0),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  width: 400.0,
-                  child: Text(
-                    ' Collector',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 45.0),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -268,7 +278,7 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[300],
       floatingActionButton: _floatingActionButton,
       body: _appBody,
       /*appBar: AppBar(
