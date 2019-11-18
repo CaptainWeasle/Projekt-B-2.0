@@ -222,7 +222,7 @@ class DetailedPageState extends State<DetailedPage> {
                               },
                             );
                           },
-                          maxLines: 2,
+                         maxLines: 3,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,

@@ -43,16 +43,16 @@ class DatabaseProvider {
   }*/
 
   void initDB(Database database, int version) async {
-    await database.execute("CREATE TABLE " + debtTABLE + " ( "
-        "id INTEGER PRIMARY KEY, "
-        "name TEXT, "
-        "debt REAL, "
-        "debtStartDate TEXT, "
-        "debtDeadlineDate TEXT, "
-        "priority INTEGER, "
-        "iOwe INTEGER, "
-        "is_done INTEGER, "
-        "descr TEXT, "
-        " ); ");
+    await database.execute(" CREATE TABLE " + debtTABLE + " ("
+        " id INTEGER PRIMARY KEY, "
+        " name TEXT, "
+        " debt REAL, "
+        " debtStartDate TEXT, "
+        " debtDeadlineDate TEXT, "
+        " priority INTEGER, "
+        " iOwe INTEGER, "
+        " is_done INTEGER, "
+        " descr TEXT "
+        ") ");
   }
 }
