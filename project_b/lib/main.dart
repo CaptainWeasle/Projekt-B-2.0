@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.blue[200],
+        secondaryHeaderColor: Colors.blue[300],
         accentColor: Colors.blue[100],
+        canvasColor: Colors.blue[200],
 
         // Define the default font family.
         fontFamily: 'Montserrat',

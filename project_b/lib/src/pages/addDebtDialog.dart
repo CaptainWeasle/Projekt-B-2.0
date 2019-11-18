@@ -79,6 +79,9 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
                   child: TextField(
+                    onChanged: (s){
+                      print(debtNameController.text);
+                    },
                     controller: debtNameController,
                     decoration: InputDecoration(
                         icon: Icon(Icons.account_circle),
@@ -158,7 +161,13 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                     ],
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                  splashColor: Colors.blue[600],
+                  highlightColor: Colors.blue[400],
                   onTap: () {
                     setState(
                       () {
@@ -170,7 +179,7 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                             DateTime.now().toString().substring(0, 10);
                         item.iOwe = !debtSwitch;
                         item.priority = prio;
-                        item.descr = "hat geklappt baby";
+                        item.descr = "Beschreibung hinzufügen";
                         print(item);
                         widget.newDebtBloc.addDebt(item);
                         Navigator.pop(context, () {
@@ -179,7 +188,7 @@ class AddDebtDialogState extends State<AddDebtDialog> {
                       },
                     );
                   },
-                  child: Container(
+                  child: Ink(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -223,6 +232,5 @@ class AddDebtDialogState extends State<AddDebtDialog> {
     return CustomAlert(
       content: _appBody,
     );
-    ;
   }
 }

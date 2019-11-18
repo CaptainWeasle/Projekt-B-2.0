@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   NewDebtBloc _newDebtBloc = NewDebtBloc();
 
   List<DebtItem> localList = [];
@@ -26,6 +27,9 @@ class HomePageState extends State<HomePage> {
   void initState() {
     print("init state aufgerufen");
     timer = Timer.periodic(Duration(milliseconds: 1), (Timer t) => () {});
+
+    print("deleted");
+
     super.initState();
   }
 
@@ -36,35 +40,6 @@ class HomePageState extends State<HomePage> {
     updateLocalList(List<DebtItem> list) {
       localList = list;
     }
-
-    var _summaryIcon = IconButton(
-      icon: Icon(Icons.assessment),
-      onPressed: () {
-        setState(() {
-          showGeneralDialog(
-              barrierColor: Colors.black.withOpacity(0.01),
-              transitionBuilder: (context, a1, a2, widget) {
-                final curvedValue =
-                    Curves.linearToEaseOut.transform(a1.value) - 1.0;
-                return Transform(
-                  transform:
-                      Matrix4.translationValues(0.0, curvedValue * 600, 0.0),
-                  child: Opacity(
-                    opacity: a1.value,
-                    child: SummaryDialog(
-                      localList: localList,
-                    ),
-                  ),
-                );
-              },
-              transitionDuration: Duration(milliseconds: 350),
-              barrierDismissible: true,
-              barrierLabel: '',
-              context: context,
-              pageBuilder: (context, animation1, animation2) {});
-        });
-      },
-    );
 
     var _floatingActionButton = FloatingActionButton(
       onPressed: () async {
@@ -83,6 +58,14 @@ class HomePageState extends State<HomePage> {
         );
       },
       child: Icon(Icons.add),
+    );
+
+    var _menuButton = FloatingActionButton(
+      heroTag: "menu",
+      onPressed: () {
+        _scaffoldKey.currentState.openDrawer();
+      },
+      child: Icon(Icons.menu),
     );
 
     Widget loadingData() {
@@ -216,11 +199,94 @@ class HomePageState extends State<HomePage> {
       icon: Icon(Icons.search),
       onPressed: () {
         showSearch(
-            context: context,
-            delegate: DataSearch(
-              list: localList,
-            ));
+          context: context,
+          delegate: DataSearch(
+            list: localList,
+          ),
+        );
       },
+    );
+
+    var _drawer = Drawer(
+      child: ListView(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text('Suche [BETA]'),
+            onTap: () {
+              setState(() {
+                Navigator.pop(context);
+                showSearch(
+                  context: context,
+                  delegate: DataSearch(
+                    list: localList,
+                  ),
+                );
+              });
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.assessment),
+            title: Text('Zusammenfassung'),
+            onTap: () {
+              setState(() {
+                Navigator.pop(context);
+                showGeneralDialog(
+                    barrierColor: Colors.black.withOpacity(0.01),
+                    transitionBuilder: (context, a1, a2, widget) {
+                      final curvedValue =
+                          Curves.linearToEaseOut.transform(a1.value) - 1.0;
+                      return Transform(
+                        transform: Matrix4.translationValues(
+                            0.0, curvedValue * 600, 0.0),
+                        child: Opacity(
+                          opacity: a1.value,
+                          child: SummaryDialog(
+                            localList: localList,
+                          ),
+                        ),
+                      );
+                    },
+                    transitionDuration: Duration(milliseconds: 350),
+                    barrierDismissible: true,
+                    barrierLabel: '',
+                    context: context,
+                    pageBuilder: (context, animation1, animation2) {});
+              });
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.delete),
+            title: Text("beglichene Schulden löschen"),
+            onTap: () {
+              setState(
+                () {
+                  for (int i = 0; i < localList.length; i++) {
+                    if (localList[i].isDone) {
+                      _newDebtBloc.deleteDebtById(localList[i].id);
+                    }
+                  }
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.delete_forever),
+            title: Text("ALLE Schulden löschen"),
+            onTap: () {
+              setState(
+                () {
+                  for (int i = 0; i < localList.length; i++) {
+                    _newDebtBloc.deleteDebtById(localList[i].id);
+                  }
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
 
     var _appBody = Column(
@@ -278,8 +344,26 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: _drawer,
       backgroundColor: Colors.blue[300],
-      floatingActionButton: _floatingActionButton,
+      floatingActionButton: Stack(
+        children: <Widget>[
+          new Padding(
+            padding: new EdgeInsets.symmetric(
+              horizontal: 32.0,
+            ),
+            child: Align(
+              child: _menuButton,
+              alignment: Alignment.bottomLeft,
+            ),
+          ),
+          Align(
+            child: _floatingActionButton,
+            alignment: Alignment.bottomRight,
+          ),
+        ],
+      ),
       body: _appBody,
       /*appBar: AppBar(
         title: Text("Debt Collector"),

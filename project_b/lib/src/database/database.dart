@@ -43,7 +43,7 @@ class DatabaseProvider {
   }*/
 
   void initDB(Database database, int version) async {
-    await database.execute("CREATE TABLE $debtTABLE ("
+    await database.execute("CREATE TABLE " + debtTABLE + " ( "
         "id INTEGER PRIMARY KEY, "
         "name TEXT, "
         "debt REAL, "
@@ -51,11 +51,8 @@ class DatabaseProvider {
         "debtDeadlineDate TEXT, "
         "priority INTEGER, "
         "iOwe INTEGER, "
-        /*SQLITE doesn't have boolean type
-        so we store isDone as integer where 0 is false
-        and 1 is true*/
         "is_done INTEGER, "
         "descr TEXT, "
-        ")");
+        " ); ");
   }
 }

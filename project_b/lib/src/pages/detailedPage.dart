@@ -22,6 +22,13 @@ class DetailedPage extends StatefulWidget {
 
 class DetailedPageState extends State<DetailedPage> {
   TextEditingController beschreibungEditController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    beschreibungEditController.text = widget.debtItem.descr;
+  }
+
   @override
   Widget build(BuildContext context) {
     var appBody = Column(
@@ -192,8 +199,9 @@ class DetailedPageState extends State<DetailedPage> {
                       color: Colors.blue[100],
                       borderRadius: BorderRadius.circular(24)),
                   child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Padding(
+                      /*Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           "Beschreibung:",
@@ -201,15 +209,25 @@ class DetailedPageState extends State<DetailedPage> {
                             fontSize: 20,
                           ),
                         ),
-                      ),
+                      ),*/
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child: EditableText(
+                          onChanged: (s) {
+                            setState(
+                              () {
+                                widget.debtItem.descr =
+                                    beschreibungEditController.text;
+                                widget.debtBloc.updateDebt(widget.debtItem);
+                              },
+                            );
+                          },
                           maxLines: 2,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
                           ),
+                          showCursor: true,
                           backgroundCursorColor: Colors.red,
                           focusNode: FocusNode(),
                           controller: beschreibungEditController,
@@ -293,16 +311,17 @@ class DetailedPageState extends State<DetailedPage> {
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: new Row(
         children: <Widget>[
           new Padding(
             padding: new EdgeInsets.symmetric(
-              horizontal: 15.0,
+              horizontal: 8.0,
             ),
           ),
           new FloatingActionButton(
             onPressed: () {
+              widget.debtBloc.updateDebt(widget.debtItem);
               Navigator.pop(context);
             },
             child: new Icon(Icons.arrow_back),
