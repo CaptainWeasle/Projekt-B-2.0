@@ -98,6 +98,9 @@ class HomePageState extends State<HomePage> {
       if (snapshot.hasData) {
         return snapshot.data.length != 0
             ? ListView.builder(
+                padding: EdgeInsets.only(
+                  top: 4,
+                ),
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, itemPosition) {
                   DebtItem debt = snapshot.data[itemPosition];
@@ -108,7 +111,7 @@ class HomePageState extends State<HomePage> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            "Deleting",
+                            "Löschen",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
@@ -292,13 +295,23 @@ class HomePageState extends State<HomePage> {
     var _appBody = Column(
       children: <Widget>[
         Container(
-          color: Colors.blue[200],
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16)),
+            color: Colors.blue[200],
+          ),
           width: double.infinity,
           child: SafeArea(
             child: ClipPath(
               clipper: HeaderClipper(),
               child: Container(
-                color: Colors.blue[100],
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16)),
+                  color: Colors.blue[100],
+                ),
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -327,7 +340,9 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Expanded(
+        Flexible(
+          fit: FlexFit.tight,
+          flex: 1,
           child: StreamBuilder(
             stream: _newDebtBloc.debts,
             builder:
