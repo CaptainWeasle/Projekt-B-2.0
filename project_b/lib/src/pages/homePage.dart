@@ -26,6 +26,10 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     print("init state aufgerufen");
+
+    DateTime test = DateTime.now();
+    print(test);
+
     timer = Timer.periodic(Duration(milliseconds: 1), (Timer t) => () {});
 
     print("deleted");

@@ -20,8 +20,8 @@ dependencies:
   sqflite: ^1.1.7+1
   path_provider: ^1.4.0
   datetime_picker_formfield: ^0.4.3
-  bloc: ^0.15.0
-  flutter_bloc: ^0.21.0
+  bloc: ^1.0.0
+  flutter_bloc: ^1.0.0
   flutter:
     sdk: flutter
 
